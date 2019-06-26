@@ -1,0 +1,14 @@
+{"type":"FeatureCollection", "features": [
+{"type":"Feature","geometry":{"type":"Point","coordinates":[109.70774745862556,23.941963506607344]},"properties":{"Id":0,"起义首领":"区振祖","起义时间":"1849年"}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[109.5969597541941,23.619879664858146]},"properties":{"Id":0,"起义首领":"陈亚贵","起义时间":"1848年"}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[109.55127410288216,23.41315209267161]},"properties":{"Id":0,"起义首领":"张嘉祥","起义时间":"1848"}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[109.74886454480631,23.635869642817326]},"properties":{"Id":0,"起义首领":"梁亚九","起义时间":""}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[109.71345816503955,23.487391276053515]},"properties":{"Id":0,"起义首领":"邱二娘","起义时间":""}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[109.87107366206575,23.575336154829003]},"properties":{"Id":0,"起义首领":"苏三娘","起义时间":"1850"}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[110.25483313308607,23.637011784100125]},"properties":{"Id":0,"起义首领":"罗大纲","起义时间":"1847年"}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[110.21600032947092,23.551351187890234]},"properties":{"Id":0,"起义首领":"张钊，田芳","起义时间":"1848年"}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[110.1508982763514,23.46797487424594]},"properties":{"Id":0,"起义首领":"钟阿春","起义时间":""}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[110.16346183046218,23.343481474420894]},"properties":{"Id":0,"起义首领":"谢江殿","起义时间":""}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[110.61574977845042,23.783205868298342]},"properties":{"Id":0,"起义首领":"罗三凤","起义时间":"1847年"}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[110.6271711912784,23.45997988526635]},"properties":{"Id":0,"起义首领":"李观保","起义时间":"1846年"}}
+]}

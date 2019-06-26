@@ -1,0 +1,8 @@
+{"type":"FeatureCollection", "features": [
+{"type":"Feature","geometry":{"type":"Point","coordinates":[382562.8661383772,2658062.2538650474]},"properties":{"Id":0,"time":"1851/6/10","x":"109.845715381411","y":"24.0206826789143","hj":"6月上旬 6月上旬","timeout":"1851/7/10"}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[369968.67428332684,2611812.9946998623]},"properties":{"Id":0,"time":"1851/4/3","x":"109.726030931171","y":"23.6022247179495","hj":"4.3 4.3","timeout":"1851/5/3"}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[420787.09452295536,2612533.438057136]},"properties":{"Id":0,"time":"1851/2/18","x":"110.223834227056","y":"23.6120158985776","hj":"2.18 2.18","timeout":"1851/3/18"}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[432727.96646857786,2612765.496604866]},"properties":{"Id":0,"time":"1851/9/15","x":"110.340819549789","y":"23.6146519524191","hj":"9.15 9.15","timeout":"1851/10/15"}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[461197.1900736917,2677906.0435526273]},"properties":{"Id":0,"time":"1851/4/8","x":"110.618050675374","y":"24.2037123452246","hj":"4.8 4.8","timeout":"1851/5/8"}},
+{"type":"Feature","geometry":{"type":"Point","coordinates":[506874.94809587445,2874544.770163417]},"properties":{"Id":0,"time":"1851/6/5","x":"111.068656579267","y":"25.9793032710699","hj":"6.5 6.5","timeout":"1851/7/5"}}
+]}

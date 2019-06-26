@@ -1,0 +1,458 @@
+
+<!doctype html>
+<html>
+<head>                  
+    <meta http-equiv=Content-Type content="text/html;charset=utf-8">
+    <meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"/>
+    <title>地图展示</title>
+    <link href="https://openlayers.org/en/v3.20.1/css/ol.css" rel="stylesheet" type="text/css" /> 
+    <script type="text/javascript" src="https://openlayers.org/en/v3.20.1/build/ol.js"></script>
+	<style type="text/css">
+		*{
+    padding:0px;
+    margin:0px;
+    border:0px;
+}
+.navBox {
+    width:100%;
+    height:40px;
+    background:#333;
+}
+.nav{
+    margin:0 auto;
+    border:0px solid #ccc;
+}
+.nav ul {
+    list-style:none;
+    width:auto;
+}
+.nav ul li {
+    height:40px;
+    text-align:center;
+}
+.nav ul li a {
+    display:block;
+    font-size:16px;
+    text-decoration:none;
+    line-height:39px;
+    color:rgba(103,204,247,1.00);
+}
+				@media screen and (min-width: 1000px) {
+.nav{
+    width:1000px;
+    height:40px;
+}
+.nav ul li {
+    float:left;
+    width:auto;
+    min-width:120px;
+    margin-left:10px;    
+}
+.nav ul li.current {
+    background:#f60;
+}
+.nav ul li:hover a {
+    background-color:#f60;
+}
+.nav ul li.current:hover a {
+    color:#fff;
+}
+.nav .title {
+    display:none;
+}    
+}
+@media screen and (min-width: 640px) and (max-width: 1000px) {
+.nav {
+    width:auto;
+    height:40px;
+}
+.nav ul li {
+    float:left;
+    width:14%;
+    min-width:80px;
+    font-size:12px;
+    line-height:20px;
+}
+.nav ul li.current {
+    background-color:#f60;
+}
+.nav ul li:hover a {
+    background-color:#f60;
+}
+.nav ul li.current:hover a {
+    color:#fff;
+}
+small {
+    display:none;
+}
+.nav .title {
+    display:none;
+}    
+}
+@media screen and (max-width: 640px) {
+    .navBox {
+        height:auto;
+        background:#444;
+    }
+    .nav {
+        width:auto;
+        height:auto;
+    }
+    .nav ul {
+        position:relative;
+        display:none;
+    }
+    .nav ul li {
+        width:100%;
+        min-width:100px;
+        background:#333;
+    }
+    .nav ul li a:active,
+    .nav ul li a:hover {
+        background-color:#f60;
+        transition:all ease-in 0.3s;
+    }
+    .nav ul li.current{
+        background-color:#f60;
+    }
+    .nav .title {
+        position:relative;
+        width:100%;
+        height:40px;
+        border-top:1px solid #444;
+        background:#333;
+        text-align:center;
+        letter-spacing:1px;
+        font-size:24px;
+        line-height:40px;
+    }
+    .nav .title a {
+        color:#f60;
+        text-decoration:none;
+    }
+    .nav .title .btn {
+        position:absolute;
+        right:10px;
+        top:0px;
+        width:34px;
+        cursor:pointer;
+    }
+    }
+</style>
+</head>
+<body>
+<div class="navBox">
+    <div class="nav">
+        <ul>
+        <li class="current"><a href="#" target="_blank">首页<small>home</small></a></li>
+        <li><a href="#" target="_blank">政治背景<small> 社会</small></a></li>
+        <li><a href="#" target="_blank">军事部署<small> 地理</small></a></li>
+		<li><a href="#" target="_blank">自然环境<small> 地理</small></a></li>
+        <li><a href="#" target="_blank">传教轨迹<small> 人物</small></a></li>
+        <li><a href="#" target="_blank">起义形式<small> 人物</small></a></li>
+        <li><a href="#" target="_blank">时间信息<small></small></a></li>
+        
+        </ul>
+        <!--match IE9,IE10 or not ie-->
+        <!--[if (get IE 8) | ! (IE)]><!-->
+        <!--<![endif]-->
+    </div>
+	</div>
+	<script type="text/javascript">
+	$(document).ready(function (){
+    $(".btn").on("click",function(){
+        $(".nav").find("ul").slideToggle(400);
+        });    
+})
+</script>
+    <div id="info" style="position: absolute; top: 10px;"></div>
+    <div id="map" style="width: 100%; height: 95%;"></div>
+<script type="text/javascript">
+
+   //加载谷歌地形图
+   var googleMapLayer = new ol.layer.Tile({
+        source: new ol.source.XYZ({
+            url:'http://mt3.google.cn/vt/lyrs=t@131,r@216000000&hl=zh-CN&gl=CN&src=app&x={x}&y={y}&z={z}&s=Gal'
+        })
+    });
+    //加载矢量图层
+    var chinaLayer = new ol.layer.Vector({
+        source: new ol.source.Vector({
+            url: '../data/china1988.json',
+            format: new ol.format.GeoJSON(),
+            wrapX: false
+        }),
+        style: function(feature) {
+            style.getText().setText(feature.get('NAME_CH'));
+            return style;
+        }
+    });
+    var cityLayer = new ol.layer.Vector({
+        source: new ol.source.Vector({
+            url: '../data/city.geojson',
+            format: new ol.format.GeoJSON(),
+            wrapX: false
+        }),
+        style: function(feature) {
+            style.getText().setText(feature.get('name'));
+            return style;
+        }
+    });
+    var qingLayer = new ol.layer.Vector({
+        source: new ol.source.Vector({
+            url: '../data/清政府控制区.json',
+            format: new ol.format.GeoJSON(),
+            wrapX: false
+        }),
+        style: new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: 'rgba(0,255,0,0.5)'
+            }),
+        })
+    });
+    var churchLayer = new ol.layer.Vector({
+        source: new ol.source.Vector({
+            url: '../data/拜上帝会活动地域.json',
+            format: new ol.format.GeoJSON(),
+            wrapX: false
+        }),
+        style: new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: 'rgba(255,0,255,0.5)'
+            })
+        })
+    });
+    var innovationLayer = new ol.layer.Vector({
+        source: new ol.source.Vector({
+            url: '../data/来土斗争活动地区.json',
+            format: new ol.format.GeoJSON(),
+            wrapX: false
+        }),
+       style: new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: 'rgba(255,127,127,0.3)'
+            }),
+            stroke: new ol.style.Stroke({
+                color: 'rgba(255,255,0,0.5)',
+                size: 1
+            })
+        })
+    });
+    var attackLayer = new ol.layer.Vector({
+        source: new ol.source.Vector({
+            url: '../data/进攻方向.json',
+            format: new ol.format.GeoJSON(),
+            wrapX: false
+        }),
+        style: new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: 'rgba(255,0,0,1)'
+            }),
+        })
+    });
+    var attackLineLayer = new ol.layer.Vector({
+        source: new ol.source.Vector({
+            url: '../data/行军路线.json',
+            format: new ol.format.GeoJSON(),
+            wrapX: false
+        }),
+        style: new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: 'red',
+                width: 3
+            })
+        })
+    });
+    var riverLayer = new ol.layer.Vector({
+        source: new ol.source.Vector({
+            url: '../data/river.json',
+            format: new ol.format.GeoJSON(),
+            wrapX: false
+        }),
+        style: new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: 'blue',
+                width: 2
+            })
+        })
+    });
+    var defenderLayer = new ol.layer.Vector({
+        source: new ol.source.Vector({
+            url: '../data/驻扎防线.json',
+            format: new ol.format.GeoJSON(),
+            wrapX: false
+        }),
+        style: new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: 'pink',
+                width: 3
+            })
+        })
+    });
+    var innoPointLayer = new ol.layer.Vector({
+        source: new ol.source.Vector({
+            url: '../data/起义地点.json',
+            format: new ol.format.GeoJSON(),
+            wrapX: false
+        }),
+        style: function(feature) {
+            style1.getText().setText(feature.get('起义首领','起义时间'));
+            return style1;
+        }
+    });
+    var warLayer = new ol.layer.Vector({
+        source: new ol.source.Vector({
+            url: '../data/主要作战地点.json',
+            format: new ol.format.GeoJSON(),
+            wrapX: false
+        }),
+        style: function(feature) {
+            style2.getText().setText(feature.get('timeout'));
+            return style;
+        }
+    });
+    //地图样式
+    var style = new ol.style.Style({
+        fill: new ol.style.Fill({
+            color: 'rgba(0,255,255,0.6)'
+        }),
+        stroke: new ol.style.Stroke({
+            color: '#319FD3',
+            width: 3
+        }),
+        text: new ol.style.Text({
+            font: '楷体',
+            fill: new ol.style.Fill({
+                color: '#000'
+            }),
+            stroke: new ol.style.Stroke({
+                color: '#fff',
+                width: 2
+            })
+        })
+    });
+	var style1 = new ol.style.Style({
+        fill: new ol.style.Fill({
+            color: 'rgba(0,255,255,0.6)'
+        }),
+        stroke: new ol.style.Stroke({
+            color: '#319FD3',
+            width: 3
+        }),
+        text: new ol.style.Text({
+            font: '宋体',
+            fill: new ol.style.Fill({
+                color: '#000'
+            }),
+            stroke: new ol.style.Stroke({
+                color: 'red',
+                width: 4
+            })
+        })
+    });
+
+    // 创建地图
+    var map = new ol.Map({
+        layers: [
+            googleMapLayer,
+            chinaLayer,
+            qingLayer,
+            churchLayer,
+            innovationLayer,
+            attackLayer,
+            riverLayer,
+            attackLineLayer,
+            defenderLayer,
+            cityLayer,
+            innoPointLayer,
+            warLayer
+        ],
+        view: new ol.View({ 
+            center: [110.162988,23.594172],
+            zoom: 11,
+            minZoom:8,
+            projection: 'EPSG:4326'
+        }),
+        target: 'map'
+    });
+
+    // 矢量图层
+	var vectorLayer = new ol.layer.Vector({
+        source: new ol.source.Vector({
+            url: '../data/geojson/guizhou.geojson',
+            format: new ol.format.GeoJSON(),
+            wrapX: false
+        }),
+        style: function(feature) {
+            style.getText().setText(feature.get('name'));
+            return style;
+        }
+    });
+	
+	var highlightStyle = new ol.style.Style({ //点击产出的颜色
+        stroke: new ol.style.Stroke({
+            color: '#B8860B',                 //点击边界颜色
+            width: 1
+        }),
+        fill: new ol.style.Fill({
+            color: 'rgba(255,0,0,0.1)'
+        }),
+        text: new ol.style.Text({
+            font: '12px Calibri,sans-serif',
+            fill: new ol.style.Fill({
+                color: 'red'
+            }),
+            stroke: new ol.style.Stroke({
+                color: '#B8860B',
+                width: 3
+            })
+        })
+    });
+	  
+    var featureOverlay = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+        map: map,
+        style: function(feature) {
+            highlightStyle.getText().setText(feature.get('name'));
+            return highlightStyle;
+        }
+    });
+	  
+    var highlight;
+    var displayFeatureInfo = function(pixel) {
+        var feature = map.forEachFeatureAtPixel(pixel, function(feature) {
+            return feature;
+        });
+        var info = document.getElementById('info');
+        if (feature) {
+            info.innerHTML = feature.getId() + ': ' + feature.get('name');
+        } else {
+            info.innerHTML = '&nbsp;';
+        }
+        if (feature !== highlight) {
+            if (highlight) {
+                featureOverlay.getSource().removeFeature(highlight);
+            }
+            if (feature) {
+                featureOverlay.getSource().addFeature(feature);
+            }
+            highlight = feature;
+        }
+    };
+	
+    map.on('click', function(evt) {
+        if (evt.dragging) {
+            return;
+        }
+        var pixel = map.getEventPixel(evt.originalEvent);
+        displayFeatureInfo(pixel);
+    });
+	  
+    map.on('pointermove', function(evt) {
+        displayFeatureInfo(evt.pixel);
+    });
+    
+</script>
+</body>
+</html>
