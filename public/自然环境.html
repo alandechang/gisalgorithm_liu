@@ -145,13 +145,19 @@ small {
 <div class="navBox">
     <div class="nav">
         <ul>
-        <li class="current"><a href="#" target="_blank">首页<small>home</small></a></li>
-        <li><a href="#" target="_blank">政治背景<small> 社会</small></a></li>
-        <li><a href="#" target="_blank">军事部署<small> 地理</small></a></li>
-		<li><a href="#" target="_blank">自然环境<small> 地理</small></a></li>
-        <li><a href="#" target="_blank">传教轨迹<small> 人物</small></a></li>
-        <li><a href="#" target="_blank">起义形式<small> 人物</small></a></li>
-        <li><a href="#" target="_blank">时间信息<small></small></a></li>
+        <li><a href="https://alandechang.github.io/gisalgorithm_liu/" target="_blank">首页<small>home</small></a></li>
+
+        <li><a href="https://alandechang.github.io/gisalgorithm_liu/public/政治背景.html" target="_blank">政治背景<small> 社会</small></a></li>
+
+        <li><a href="https://alandechang.github.io/gisalgorithm_liu/public/军事部署.html" target="_blank">军事部署<small> 地理</small></a></li>
+
+	<li><a href="https://alandechang.github.io/gisalgorithm_liu/public/自然背景.html" target="_blank">自然环境<small> 地理</small></a></li>
+
+        <li><a href="https://alandechang.github.io/gisalgorithm_liu/public/传教轨迹.html" target="_blank">传教轨迹<small> 人物</small></a></li>
+
+        <li><a href="https://alandechang.github.io/gisalgorithm_liu/public/起义形势.html" target="_blank">起义形式<small> 人物</small></a></li>
+
+        <li><a href="https://alandechang.github.io/gisalgorithm_liu/public/时间信息.html" target="_blank">时间信息<small></small></a></li>
         
         </ul>
         <!--match IE9,IE10 or not ie-->
@@ -170,16 +176,65 @@ small {
     <div id="map" style="width: 100%; height: 95%;"></div>
 <script type="text/javascript">
 
+	var url = 'http://58.213.133.181:7791/tilemap/earth_image_geodetic/MapServer/tile/{z}/{y}/{x}';
+    var resolutions = [            
+        0.7031250000000001,
+        0.35156250000000006,
+        0.17578125000000003,
+        0.08789062500000001,
+        0.04394531250000001,
+        0.021972656250000003,
+		0.010986328125000002,
+		0.005493164062500001,
+		0.0027465820312500004,
+		0.0013732910156250002,
+	    0.0006866455078125001,
+		0.00034332275390625005,
+		0.00017166137695312503,
+		8.583068847656251e-05,
+		4.29153442382812e-05,
+		2.14576721191406e-05,
+		1.07288360595703e-05,
+		5.36441802978516e-06,
+		2.68220901489258e-06,
+		1.34110450744629e-06,
+		6.70552253723145e-07,
+        3.35276126861572e-07
+    ];
+
+    let projection = ol.proj.get('EPSG:4326');
+
+    var tilegrid  = new ol.tilegrid.TileGrid({
+        tileSize: [256,256],        // 瓦片图片分辨率
+        origin: [-180,90],          // 设置瓦片坐标原点坐标
+        extent: [-180,-90,180,90],  // 这个范围显示瓦片
+        resolutions: resolutions    // 设置分辨率
+    });
+
+    // 创建地科院地图的数据源
+    var nnuSource = new ol.source.TileImage({
+        projection: projection, 
+        tileGrid: tilegrid,
+        url: url,
+        wrapX: false
+    });
+
+    // 地科院地图层
+    var nnuMapLayer = new ol.layer.Tile({
+        visible: true,
+        source: nnuSource
+    });
+
    //加载谷歌地形图
-   var googleMapLayer = new ol.layer.Tile({
+   /*var googleMapLayer = new ol.layer.Tile({
         source: new ol.source.XYZ({
             url:'http://mt3.google.cn/vt/lyrs=t@131,r@216000000&hl=zh-CN&gl=CN&src=app&x={x}&y={y}&z={z}&s=Gal'
         })
-    });
+    });*/
     //加载矢量图层
     var chinaLayer = new ol.layer.Vector({
         source: new ol.source.Vector({
-            url: '../data/china1988.json',
+            url: 'https://alandechang.github.io/gisalgorithm_liu/public/china1988.json',
             format: new ol.format.GeoJSON(),
             wrapX: false
         }),
@@ -190,7 +245,7 @@ small {
     });
     var cityLayer = new ol.layer.Vector({
         source: new ol.source.Vector({
-            url: '../data/city.geojson',
+            url: 'https://alandechang.github.io/gisalgorithm_liu/public/city.geojson',
             format: new ol.format.GeoJSON(),
             wrapX: false
         }),
@@ -201,7 +256,7 @@ small {
     });
     var qingLayer = new ol.layer.Vector({
         source: new ol.source.Vector({
-            url: '../data/清政府控制区.json',
+            url: 'https://alandechang.github.io/gisalgorithm_liu/public/清政府控制区.json',
             format: new ol.format.GeoJSON(),
             wrapX: false
         }),
@@ -213,7 +268,7 @@ small {
     });
     var churchLayer = new ol.layer.Vector({
         source: new ol.source.Vector({
-            url: '../data/拜上帝会活动地域.json',
+            url: 'https://alandechang.github.io/gisalgorithm_liu/public/拜上帝会活动地域.json',
             format: new ol.format.GeoJSON(),
             wrapX: false
         }),
@@ -225,7 +280,7 @@ small {
     });
     var innovationLayer = new ol.layer.Vector({
         source: new ol.source.Vector({
-            url: '../data/来土斗争活动地区.json',
+            url: 'https://alandechang.github.io/gisalgorithm_liu/public/来土斗争活动地区.json',
             format: new ol.format.GeoJSON(),
             wrapX: false
         }),
@@ -241,7 +296,7 @@ small {
     });
     var attackLayer = new ol.layer.Vector({
         source: new ol.source.Vector({
-            url: '../data/进攻方向.json',
+            url: 'https://alandechang.github.io/gisalgorithm_liu/public/进攻方向.json',
             format: new ol.format.GeoJSON(),
             wrapX: false
         }),
@@ -253,7 +308,7 @@ small {
     });
     var attackLineLayer = new ol.layer.Vector({
         source: new ol.source.Vector({
-            url: '../data/行军路线.json',
+            url: 'https://alandechang.github.io/gisalgorithm_liu/public/行军路线.json',
             format: new ol.format.GeoJSON(),
             wrapX: false
         }),
@@ -266,7 +321,7 @@ small {
     });
     var riverLayer = new ol.layer.Vector({
         source: new ol.source.Vector({
-            url: '../data/river.json',
+            url: 'https://alandechang.github.io/gisalgorithm_liu/public/river.json',
             format: new ol.format.GeoJSON(),
             wrapX: false
         }),
@@ -279,7 +334,7 @@ small {
     });
     var defenderLayer = new ol.layer.Vector({
         source: new ol.source.Vector({
-            url: '../data/驻扎防线.json',
+            url: 'https://alandechang.github.io/gisalgorithm_liu/public/驻扎防线.json',
             format: new ol.format.GeoJSON(),
             wrapX: false
         }),
@@ -292,7 +347,7 @@ small {
     });
     var innoPointLayer = new ol.layer.Vector({
         source: new ol.source.Vector({
-            url: '../data/起义地点.json',
+            url: 'https://alandechang.github.io/gisalgorithm_liu/public/起义地点.json',
             format: new ol.format.GeoJSON(),
             wrapX: false
         }),
@@ -303,7 +358,7 @@ small {
     });
     var warLayer = new ol.layer.Vector({
         source: new ol.source.Vector({
-            url: '../data/主要作战地点.json',
+            url: 'https://alandechang.github.io/gisalgorithm_liu/public/主要作战地点.json',
             format: new ol.format.GeoJSON(),
             wrapX: false
         }),
@@ -355,7 +410,8 @@ small {
     // 创建地图
     var map = new ol.Map({
         layers: [
-            googleMapLayer,
+            //googleMapLayer,
+	    nnuMapLayer,
             chinaLayer,
             qingLayer,
             churchLayer,
